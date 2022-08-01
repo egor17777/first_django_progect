@@ -8,6 +8,8 @@ week_day_plan_dict = {
     "tuesday": "1. Wake up 2. Brush your teeth 3. Wash your face 4. Have breakfast 5. Study 6. Clean the house"
 }
 
+def index(request):
+    return render(request, 'week_days/greeting.html')
 
 def get_plans_for_the_day(request, day_of_the_week: str) -> HttpResponse:
     """Returns to HttpResponse plans for the day

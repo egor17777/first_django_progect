@@ -102,6 +102,5 @@ def get_info_signs_zodiac(request, signs_zodiac: str | int) -> HttpResponse:
 
 
 def test(request):
-    response = render_to_string("horoscope/index_page.html")
-    return HttpResponse(response)
+    return render(request, "horoscope/index_page.html")
     
