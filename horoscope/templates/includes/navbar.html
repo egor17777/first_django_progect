@@ -1,0 +1,8 @@
+
+<nav>
+    <a href="{% url 'index_horoscope' %}">Main</a>
+    {% for sign in zodiacs %}
+            <a href= "{%url 'name-horoscope' sign %}"> {{sign|title}}</a>
+    {% endfor %}
+
+</nav>

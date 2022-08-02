@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>{% if None is not task %}
+        {{day}} to-do list
+        {%else%}
+        Error day of the week
+        {%endif%}
+    </title>
+
+
+</head>
+
+<body>
+    {% if None is task %}
+    <h1>Wrong day of the week</h1>
+    {% else %}
+    {%for i in task%}
+    <h2>
+        <li>{{i|title}}</li>
+    </h2>
+    {%endfor%}
+    {% endif %}
+</body>
+
+</html>

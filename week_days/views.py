@@ -4,8 +4,8 @@ from django.urls import reverse
 # Create your views here.
 
 week_day_plan_dict = {
-    "monday": "1. Wake up 2. Wash your face 3. Brush your teeth 4. Have breakfast",
-    "tuesday": "1. Wake up 2. Brush your teeth 3. Wash your face 4. Have breakfast 5. Study 6. Clean the house"
+    "monday": ["Wake up", "Wash your face", "Brush your teeth", "Have breakfast"],
+    "tuesday": ["Wake up", "Brush your teeth", "Wash your face", "Have breakfast", "Study", "Clean the house"]
 }
 
 def index(request):
@@ -21,10 +21,12 @@ def get_plans_for_the_day(request, day_of_the_week: str) -> HttpResponse:
     Returns:
         HttpResponse: Returns the response to the page
     """
-    if day_of_the_week in week_day_plan_dict:
-        return HttpResponse(week_day_plan_dict[day_of_the_week])
-    else:
-        return HttpResponseNotFound("Sorry I don't know that day of the week")
+    description = week_day_plan_dict.get(day_of_the_week, None)
+    data = {
+        "day" : day_of_the_week,
+        "task" : description
+    }
+    return render(request, "week_days/tasks.html",context=data)
 
 
 def get_day_of_the_week(request, day_of_the_week: int) -> HttpResponse:
@@ -44,4 +46,4 @@ def get_day_of_the_week(request, day_of_the_week: int) -> HttpResponse:
             redirect_url=reverse("name_day_week", args=(name_day, ))
             return HttpResponseRedirect(redirect_url)
     else:
-        return HttpResponseNotFound(f'Oops... Invalid day number "{day_of_the_week}"')
+        return HttpResponseNotFound(f'<h2>Oops... Invalid day number "{day_of_the_week}"</h2>')

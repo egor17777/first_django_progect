@@ -1,14 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
-</head>
-<body>
-    Это боди
-</body>
-</html>>
+{% extends 'base.html'%}
+
+{% load static %}
+
+{% block css_config %}
+    <link rel="stylesheet" href="{% static 'horoscope/css/info.css' %}">
+{% endblock %}
+
+{% block title %}  
+    Horoscope for {{sign|upper}}
+{% endblock %}
+
+{% block content %}  
+{% include 'includes/navbar.html' %}
+    <h1>{{sign|title}}</h1>
+    {% if None is horoscope %}
+        <h2>Wrong zodiac sign {{sign|title}}</h2>
+    {% else %}
+        <h2>{{horoscope|center:"15"}}</h2>
+    {% endif %}
+{% endblock %}

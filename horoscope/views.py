@@ -64,43 +64,51 @@ def get_zodiac_list_in_type(request, type):
 def index(request):
     """Returns all signs zodiacs"""
     zodiacs = list(dict_zodiac)
+    data = {
+        "zodiacs" : zodiacs
+    }
 
-    li_elements = ''
-
-    for i in zodiacs:
-        redirect_path = reverse("name-horoscope", args=[i])
-        li_elements += f"<li><a href= {redirect_path}>{i.title()}</a></li>"
-    li_elements += f"<li><a href= /horoscope/type>Types sign zodiac</a></li>"
-    response_html = f"<ul>{li_elements}</ul>"
-
-    return HttpResponse(response_html)
+    return render(request, "horoscope/main_index.html", context=data)
 
 
-def get_info_signs_zodiac(request, signs_zodiac: str | int) -> HttpResponse:
+def get_info_signs_zodiac(request, signs_zodiac: str) -> HttpResponse:
     """Gives information on the signs of the zodiac
 
     Args:
         request (_type_): _description_
-        signs_zodiac (str | int): Accepts either a zodiac sign or its number
+        signs_zodiac (str): Accepts a zodiac sign 
 
     Returns:
         HttpResponse: Returns the response to the page
     """
-    if isinstance(signs_zodiac, int):
-        zodiacs = list(dict_zodiac)
-        if signs_zodiac <= len(zodiacs):
-            name_zodiac = zodiacs[signs_zodiac-1]
-            redirect_url = reverse("name-horoscope", args=(name_zodiac, ))
-            return HttpResponseRedirect(redirect_url)
-        else:
-            return HttpResponseNotFound(f'Oops... I can\'t find that number zodiac sign "{signs_zodiac}"')
     description = dict_zodiac.get(signs_zodiac, None)
-    if description:
-        return HttpResponse(f"<h1>Sign zodiac: {description}</h1>")
+    zodiacs = list(dict_zodiac)
+    data = {
+        "sign": signs_zodiac,
+        "horoscope": description,
+        "zodiacs" : zodiacs
+    }
+    return render(request, "horoscope/index_page.html", data)
+
+
+def get_info_signs_zodiac_number(request, signs_zodiac: int) -> HttpResponseRedirect:
+    """Accepts the serial number of the zodiac sign and redirects to the desired address
+
+    Args:
+        request (_type_): _description_
+        signs_zodiac (int): Accepts a number zodiac sign 
+
+    Returns:
+        HttpResponseRedirect: Redirect
+    """
+    zodiacs = list(dict_zodiac)
+    if signs_zodiac <= len(zodiacs):
+        name_zodiac = zodiacs[signs_zodiac-1]
+        redirect_url = reverse("name-horoscope", args=(name_zodiac, ))
+        return HttpResponseRedirect(redirect_url)
     else:
-        return HttpResponseNotFound(f'Oops... I can\'t find that zodiac sign "{signs_zodiac}"')
+        return HttpResponseNotFound(f'<h1>Oops... I can\'t find that number zodiac sign "{signs_zodiac}"</h1>')
 
 
 def test(request):
     return render(request, "horoscope/index_page.html")
-    
